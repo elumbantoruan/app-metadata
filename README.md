@@ -72,14 +72,33 @@ Go modules (go.mod) will simply download all dependencies after running the buil
 
 ### handlers
 
-MetadataHandler contains a set of methods to perform POST, PUT, GET, and DELETE for REST API operations.
+MetadataHandler contains a set of methods to perform POST, PUT, GET, and DELETE for REST API operations.  
+Here are the list of http methods along with response code
 
 ``` text
 POST   /app-metadata
+    201 - resource created
+    400 - invalid yaml format, missing required field
+    500 - error from data storage
 PUT    /app-metadata/{appID}
-GET    /app-metadata
+    200 - resource updated
+    400 - invalid yaml format, missing required field
+    409 - conflict when id is not found during update
+    500 - error from data storage
 GET    /app-metadata/{appID}
+    200 - resource is found and returned
+    400 - missing appID parameter
+    404 - resources not found (appID is not found in storage)
+    500 - error from data storage
+GET    /app-metadata
+    200 - resource is found and returned
+    404 - resource not found
+    500 - error from data storage
 DELETE /app-metadata/{appID}
+    204 - resource deleted (no content)
+    400 - missing appID parameter
+    409 - conflict when id is not found during delete
+    500 - error from data storage
 ```
 
 It has a dependency on repository interface to perform a create, get, update, and delete repository actions.
